@@ -1,0 +1,249 @@
+openapi: 3.0.0
+info:
+  title: Raxy api design example
+  version: 0.1.0
+servers:
+  - url: 'http://localhost:8080'
+paths:
+  /users/add:
+    post:
+      operationId: add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AddUsersX"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AddUsersY"
+  /users/get:
+    post:
+      operationId: get
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersFiltersX"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersY"
+  /users/get/by_filters/to_ids:
+    post:
+      operationId: getIdsByFilter
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsersFiltersX"
+      responses:
+        "200":
+          description: ""
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsersIdsY"
+components:
+  schemas:
+    AddUsersX:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaX"
+        data:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+                format: uuid
+              value:
+                $ref: "#/components/schemas/AddUserX"
+    AddUserX:
+      type: object
+      properties:
+        email:
+          type: string
+        name:
+          type: string
+    AddUsersY:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaY"
+        data:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+                format: uuid
+              value:
+                $ref: "#/components/schemas/AddUserY"
+    AddUserY:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+    UsersFiltersX:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaX"
+        data:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+                format: uuid
+              value:
+                $ref: "#/components/schemas/UsersFilterX"
+    UsersFilterX:
+      type: object
+      properties:
+        property:
+          $ref: "#/components/schemas/UserFilterProperty"
+        value:
+          type: string
+        operator:
+          $ref: "#/components/schemas/Operator"
+        group:
+          type: integer
+    UserFilterProperty:
+      type: string
+      enum:
+        - "email"
+        - "name"
+        - "role"
+    UsersY:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaY"
+        data:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+                format: uuid
+              value:
+                $ref: "#/components/schemas/UserY"
+    UserY:
+      type: object
+      properties:
+        id:
+          type: string
+        email:
+          type: string
+        name:
+          type: string
+    UsersIdsY:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaY"
+        data:
+          type: array
+          items:
+            properties:
+              key:
+                type: string
+                format: uuid
+              value:
+                type: string
+# Common components
+    MetaX:
+      type: object
+      properties:
+        limit:
+          type: integer
+        offset:
+          type: integer
+        sortBy:
+          type: string
+        orderBy:
+          type: string
+      additionalProperties: true
+    MetaY:
+      properties:
+        status:
+          $ref: "#/components/schemas/Status"
+        total:
+          type: integer
+        errors:
+          type: array
+          items:
+            $ref: "#/components/schemas/Error"
+      additionalProperties: true
+    Status:
+      type: string
+      enum:
+        - success
+        - fail
+    Error:
+      type: object
+      properties:
+        key:
+          type: string
+          format: uuid
+        property:
+          type: string
+        value:
+          type: string
+    Operator:
+      type: string
+      enum:
+        - "="
+        - "!="
+        - ">"
+        - "<"
+        - ">="
+        - "<="
+        - "starts_with"
+        - "ends_with"
+# Templates
+#    Xs:
+#      type: object
+#      properties:
+#        meta:
+#          $ref: "#/components/schemas/MetaX"
+#        data:
+#          type: array
+#          items:
+#            properties:
+#              key:
+#                type: string
+#                format: uuid
+#              value:
+#                $ref: "#/components/schemas/X"
+#    X:
+#      type: object
+#    Ys:
+#      type: object
+#      properties:
+#        meta:
+#          $ref: "#/components/schemas/MetaY"
+#        data:
+#          type: array
+#          items:
+#            properties:
+#              key:
+#                type: string
+#                format: uuid
+#              value:
+#                $ref: "#/components/schemas/Y"
+#    Y:
+#      type: object
