@@ -50,7 +50,7 @@
       ]  
     }
 
-### Terms:
+### Glossary:
 
 `resource` is a name of a resource. If `resource` is a collection, each element must have a unique identifier.
 
