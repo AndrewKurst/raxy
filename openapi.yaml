@@ -53,22 +53,20 @@ paths:
 components:
   schemas:
     AddUsersX:
+      allOf:
+        - $ref: "#/components/schemas/X"
       type: object
       properties:
-        meta:
-          $ref: "#/components/schemas/MetaX"
         data:
           type: array
           items:
-            properties:
-              key:
-                type: string
-                format: uuid
-              value:
-                $ref: "#/components/schemas/AddUserX"
+            $ref: "#/components/schemas/AddUserX"
     AddUserX:
       type: object
       properties:
+        key:
+          type: string
+          format: uuid
         email:
           type: string
         name:
@@ -81,15 +79,13 @@ components:
         data:
           type: array
           items:
-            properties:
-              key:
-                type: string
-                format: uuid
-              value:
-                $ref: "#/components/schemas/AddUserY"
+            $ref: "#/components/schemas/AddUserY"
     AddUserY:
       type: object
       properties:
+        key:
+          type: string
+          format: uuid
         id:
           type: string
         email:
@@ -98,18 +94,13 @@ components:
           type: string
     UsersFiltersX:
       type: object
+      allOf:
+        - $ref: "#/components/schemas/X"
       properties:
-        meta:
-          $ref: "#/components/schemas/MetaX"
         data:
           type: array
           items:
-            properties:
-              key:
-                type: string
-                format: uuid
-              value:
-                $ref: "#/components/schemas/UsersFilterX"
+            $ref: "#/components/schemas/UsersFilterX"
     UsersFilterX:
       type: object
       properties:
@@ -135,12 +126,7 @@ components:
         data:
           type: array
           items:
-            properties:
-              key:
-                type: string
-                format: uuid
-              value:
-                $ref: "#/components/schemas/UserY"
+            $ref: "#/components/schemas/UserY"
     UserY:
       type: object
       properties:
@@ -152,9 +138,9 @@ components:
           type: string
     UsersIdsY:
       type: object
+      allOf:
+        - $ref: "#/components/schemas/X"
       properties:
-        meta:
-          $ref: "#/components/schemas/MetaY"
         data:
           type: array
           items:
@@ -165,6 +151,16 @@ components:
               value:
                 type: string
 # Common components
+    X:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaX"
+    Y:
+      type: object
+      properties:
+        meta:
+          $ref: "#/components/schemas/MetaY"
     MetaX:
       type: object
       properties:
@@ -175,7 +171,7 @@ components:
         sortBy:
           type: string
         orderBy:
-          type: string
+          $ref: "#/components/schemas/OrderBy"
       additionalProperties: true
     MetaY:
       properties:
@@ -214,36 +210,8 @@ components:
         - "<="
         - "starts_with"
         - "ends_with"
-# Templates
-#    Xs:
-#      type: object
-#      properties:
-#        meta:
-#          $ref: "#/components/schemas/MetaX"
-#        data:
-#          type: array
-#          items:
-#            properties:
-#              key:
-#                type: string
-#                format: uuid
-#              value:
-#                $ref: "#/components/schemas/X"
-#    X:
-#      type: object
-#    Ys:
-#      type: object
-#      properties:
-#        meta:
-#          $ref: "#/components/schemas/MetaY"
-#        data:
-#          type: array
-#          items:
-#            properties:
-#              key:
-#                type: string
-#                format: uuid
-#              value:
-#                $ref: "#/components/schemas/Y"
-#    Y:
-#      type: object
+    OrderBy:
+      type: string
+      enum:
+        - asc
+        - desc
